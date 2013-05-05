@@ -1,0 +1,51 @@
+package test;
+
+
+import java.util.Iterator;
+import java.util.List;
+
+import model.Comment;
+import model.CommentScore;
+import model.Status;
+import DAO.CommentDAO;
+import DAO.StatusDAO;
+import util.RateScore;
+
+
+public class Rating {
+
+	
+	public void rating()
+	{
+		StatusDAO statusDao = null;
+		List<Status> slist = null;
+		List<Comment> clist = null;
+		Status status = null;
+		Comment comment = null;
+		Iterator<Status> siter = null;
+		Iterator<Comment> citer = null;
+		
+		
+		statusDao = new StatusDAO();
+		slist = statusDao.getStatus();
+		siter = slist.iterator();
+		while(siter.hasNext())
+		{
+			
+		}
+	}
+	
+	public static void main(String args[])
+	{
+
+		CommentDAO cd = new CommentDAO();
+		List<Comment> clist = cd.getCommentByStatusId("13624287102");
+		RateScore rs = new RateScore();
+		RateScore.loadDict();
+		List<CommentScore> cslist = rs.rateComment(clist);
+		//System.out.println(cslist);
+		System.out.println(cslist.size());
+	}
+	
+	
+}

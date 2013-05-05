@@ -1,0 +1,106 @@
+package test;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+
+import model.Comment;
+import model.CommentScore;
+import model.Status;
+
+import DAO.CommentDAO;
+import DAO.StatusDAO;
+
+import util.DB;
+import util.RateScore;
+import weibo4j.model.Paging;
+
+import download.CommentFetcher;
+
+public class Test {
+
+	public static void main(String args[])
+	{
+//		File file = null;
+//		FileReader fw = null;
+//		BufferedReader bw = null;
+//		String str = null;
+//		
+//		try {
+//			file = new File("D:\\statusIds.txt");
+//			bw = new BufferedReader(new FileReader(file));
+//			while((str = bw.readLine()) != null)
+//			{
+//				System.out.println(str);
+//			}
+//			bw.readLine();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+//		load();
+		
+//		StatusDAO sd = new StatusDAO();
+//		CommentDAO cd = new CommentDAO();
+//		List<Status> list = sd.getStatus();
+//		List<Comment> clist = cd.getCommentByStatusId(list.get(2).getSid());
+//		System.out.println(clist.size());
+//		System.out.println(clist);
+		CommentDAO cd = new CommentDAO();
+		List<Comment> clist = cd.getCommentByStatusId("13624287102");
+		RateScore rs = new RateScore();
+		RateScore.loadDict();
+		List<CommentScore> cslist = rs.rateComment(clist);
+		//System.out.println(cslist);
+		System.out.println(cslist.size());
+	}
+	
+	public static void load()
+	{
+		File statusIdsFile = null;
+		BufferedReader br = null;
+		String id = null;
+		Connection conn = null;
+		PreparedStatement pStmt = null;
+		String sql = "insert into status values(?)";
+
+		try {
+			conn = DB.getConn();
+			conn.setAutoCommit(false);
+			pStmt = DB.getpStmt(conn, sql);
+			statusIdsFile = new File("D:\\statusIds.txt");
+			br = new BufferedReader(new FileReader(statusIdsFile));
+			while((id = br.readLine()) != null)
+			{
+				System.out.println(id);
+				pStmt.setString(1, id);
+				pStmt.addBatch();
+			}
+			pStmt.executeBatch();
+			conn.commit();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+		}
+	}
+}

@@ -1,0 +1,68 @@
+package comment;
+
+import java.util.Date;
+
+public class Comment {
+	
+	private Date createdAt;                    //评论时间
+	private String cid;                        //评论id
+	private String ctext;                      //评论内容
+	private String source;                     //内容来源
+	private String mid;						   //评论62进制id
+	private String uid;							//评论者id
+	private String sid;							//评论微博id
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+	public String getCid() {
+		return cid;
+	}
+	public void setCid(String cid) {
+		this.cid = cid;
+	}
+	public String getCtext() {
+		return ctext;
+	}
+	public void setCtext(String ctext) {
+		this.ctext = ctext;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
+	}
+	public String getMid() {
+		return mid;
+	}
+	public void setMid(String mid) {
+		this.mid = mid;
+	}
+	public String getUid() {
+		return uid;
+	}
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+	public String getSid() {
+		return sid;
+	}
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
+
+}
+
+//create table comment
+//(
+//	created_at bigint,				#评论时间
+//	cid VARCHAR(32) primary key,	#评论id
+//	ctext TEXT,						#评论内容
+//	source TEXT,					#评论源地址
+//	mid varchar(32),				#评论62进制id
+//	uid varchar(32),				#评论者id
+//	sid varchar(32)					#评论微博id
+//);

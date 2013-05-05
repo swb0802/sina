@@ -1,0 +1,59 @@
+create table comment
+(
+	created_at bigint,				#评论时间
+	cid VARCHAR(32) primary key,	#评论id
+	ctext TEXT,						#评论内容
+	source TEXT,					#评论源地址
+	mid varchar(32),				#评论62进制id
+	uid varchar(32),				#评论者id
+	sid varchar(32)					#评论微博id
+);
+
+create table user
+(
+	uid varchar(32) primary key, 	#用户id
+	screen_name varchar(32),		#昵称
+	provience varchar(32),			#省份
+	city varchar(32),				#城市
+	url TEXT,						#用户博客地址
+	gender varchar(2),				#性别
+	follower_count int,				#粉丝数
+	friends_count int,				#关注数
+	status_count int,				#微博数
+	favourites_count int,			#收藏数
+	created_at DATETIME,			#账户创建时间
+	bi_followers_count int			#互粉数
+);
+
+create table comment_score
+{
+	cid varchar(32) primary key,
+	score float  
+}
+
+CREATE TABLE `comment` (
+  `created_at` bigint(20) DEFAULT NULL,
+  `cid` varchar(32) NOT NULL,
+  `ctext` text,
+  `source` text,
+  `mid` varchar(32) DEFAULT NULL,
+  `uid` varchar(32) DEFAULT NULL,
+  `sid` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=GBK;
+
+CREATE TABLE `user` (
+  `uid` varchar(32) NOT NULL,
+  `screen_name` varchar(32) DEFAULT NULL,
+  `provience` varchar(32) DEFAULT NULL,
+  `city` varchar(32) DEFAULT NULL,
+  `url` text,
+  `gender` varchar(2) DEFAULT NULL,
+  `follower_count` int(11) DEFAULT NULL,
+  `friends_count` int(11) DEFAULT NULL,
+  `status_count` int(11) DEFAULT NULL,
+  `favourites_count` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `bi_followers_count` int(11) DEFAULT NULL,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=GBK;

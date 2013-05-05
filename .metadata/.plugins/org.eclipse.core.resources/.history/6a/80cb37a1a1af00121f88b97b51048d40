@@ -1,0 +1,11 @@
+package model;
+
+public class Status {
+
+	private String sid;
+	
+}
+//create table status
+//(
+//	sid varchar(32) primary key
+//);

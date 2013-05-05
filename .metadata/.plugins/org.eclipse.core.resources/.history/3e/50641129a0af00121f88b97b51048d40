@@ -1,0 +1,14 @@
+package comment;
+
+import java.util.Date;
+
+public class Comment {
+	private static final long serialVersionUID = 1272011191310628589L;
+	private Date createdAt;                    //评论时间
+	private long id;                           //评论id
+	private String mid;						   //评论id
+	private String idstr;					   //评论id
+	private String text;                       //评论内容
+	private String source;                     //内容来源
+}
+

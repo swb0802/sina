@@ -1,0 +1,27 @@
+package test;
+
+
+import java.util.List;
+
+import model.Comment;
+import model.CommentScore;
+import DAO.CommentDAO;
+import util.RateScore;
+
+
+public class Rating {
+
+	public static void main(String args[])
+	{
+
+		CommentDAO cd = new CommentDAO();
+		List<Comment> clist = cd.getCommentByStatusId("13624287102");
+		RateScore rs = new RateScore();
+		RateScore.loadDict();
+		List<CommentScore> cslist = rs.rateComment(clist);
+		//System.out.println(cslist);
+		System.out.println(cslist.size());
+	}
+	
+	
+}

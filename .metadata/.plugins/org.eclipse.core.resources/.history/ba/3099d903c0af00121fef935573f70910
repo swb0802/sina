@@ -1,0 +1,41 @@
+package DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.Iterator;
+import java.util.List;
+
+import model.Status;
+import model.StatusScore;
+
+import util.DB;
+
+public class StatusScoreDAO {
+
+	public void save(List<StatusScore> sslist)
+	{
+		Connection conn = null;
+		PreparedStatement pStmt = null;
+		String sql = "insert into status_score(sid, score) values(?, ?)";
+		StatusScore statusScore = null;
+		Iterator<StatusScore> iter = null;
+		
+		conn = DB.getConn();
+		conn.setAutoCommit(false);
+		pStmt = DB.getpStmt(conn, sql);
+		iter = sslist.iterator();
+		while(iter.hasNext())
+		{
+			statusScore = iter.next();
+			pStmt.setString(1, statusScore.getSid());
+			pStmt.setFloat(2, statusScore.getScore());
+			pStmt.addBatch();
+		}
+		conn.commit();
+	}
+}
+//create table status_score
+//(
+//	sid varchar(32) primary key,
+//	score float
+//);

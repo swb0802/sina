@@ -1,0 +1,35 @@
+package DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.List;
+
+import model.Status;
+
+import util.DB;
+
+public class StatusScoreDAO {
+
+	public void save(List<Status> slist, float[] statusScores)
+	{
+		Connection conn = null;
+		PreparedStatement pStmt = null;
+		String sql = "insert into status_score(sid, score) values(?, ?)";
+		int length = statusScores.length;
+		
+		conn = DB.getConn();
+		conn.setAutoCommit(false);
+		pStmt = DB.getpStmt(conn, sql);
+		for(int i = 0; i < length; i++)
+		{
+			
+		}
+		conn.commit();
+	}
+	
+}
+//create table status_score
+//(
+//	sid varchar(32) primary key,
+//	score float
+//);

@@ -1,0 +1,132 @@
+package test;
+
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import model.Comment;
+import model.CommentScore;
+import model.Status;
+import model.StatusScore;
+import DAO.CommentDAO;
+import DAO.CommentScoreDAO;
+import DAO.StatusDAO;
+import DAO.StatusScoreDAO;
+import util.RateScore;
+
+
+public class Rating {
+
+	//对comment表中的所有评论评分，结果存入comment_score表中
+	//对status表中的所有微博评分，结果存入status_score表中
+	public void rating()
+	{
+		StatusDAO statusDao = null;
+		CommentDAO commentDao = null;
+		RateScore rateScore = null;
+		List<Status> slist = null;
+		List<Comment> clist = null;
+		List<CommentScore> cslist = null;
+		List<StatusScore> sslist = null;
+		Status status = null;
+		StatusScore statusScore = null;
+		Iterator<Status> siter = null;
+		long startTime = 0;
+		long endTime = 0;
+		File file = null;
+		FileWriter fw = null;
+		
+		
+		
+		statusDao = new StatusDAO();
+		commentDao = new CommentDAO();
+		rateScore = new RateScore();
+		RateScore.loadDict();
+		sslist = new LinkedList<StatusScore>();
+		slist = statusDao.getStatus();//取出所有微博		
+		siter = slist.iterator();
+		file = new File("D:\\timecost.txt");
+		try {
+			fw = new FileWriter(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			while(siter.hasNext())//对于每一条微博，取出它所有的评论，进行评分
+			{
+				status = siter.next();
+				
+				startTime = System.currentTimeMillis();
+				clist = commentDao.getCommentByStatusId(status.getSid());
+				endTime = System.currentTimeMillis();
+				fw.write(clist.size() + "\t");
+				fw.write((endTime - startTime) + "\t");
+				System.out.print(clist.size() + "\t");
+				System.out.print((endTime - startTime) + "\t");
+				
+				startTime = System.currentTimeMillis();
+				cslist = rateScore.rateComment(clist);
+				endTime = System.currentTimeMillis();
+				fw.write((endTime - startTime) + "\t");
+				System.out.print((endTime - startTime) + "\t");
+				
+				statusScore = new StatusScore();
+				startTime = System.currentTimeMillis();
+				statusScore.setScore(rateScore.rateStatus(cslist));
+				endTime = System.currentTimeMillis();
+				fw.write((endTime - startTime) + "\n");
+				statusScore.setSid(status.getSid());
+				System.out.print((endTime - startTime) + "\n");
+				
+				sslist.add(statusScore);
+				//saveCommentScore(cslist);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			if(fw != null)
+			{
+				try {
+					fw.flush();
+					fw.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		//saveStatusScore(sslist);
+	}
+	
+	public void saveStatusScore(List<StatusScore> sslist)
+	{
+		StatusScoreDAO statusScoreDao = null;
+		
+		statusScoreDao = new StatusScoreDAO();
+		statusScoreDao.save(sslist);
+	}
+	
+	public void saveCommentScore(List<CommentScore> cslist)
+	{
+		CommentScoreDAO commentScoreDao = null;
+		
+		commentScoreDao = new CommentScoreDAO();
+		commentScoreDao.save(cslist);
+	}
+	
+	public static void main(String args[])
+	{
+
+		Rating rating = new Rating();
+		rating.rating();
+		
+	}
+	
+	
+}

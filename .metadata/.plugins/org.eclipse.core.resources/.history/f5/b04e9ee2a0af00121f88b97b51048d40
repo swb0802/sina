@@ -1,0 +1,25 @@
+package comment;
+
+import java.util.Date;
+
+public class Comment {
+	private static final long serialVersionUID = 1272011191310628589L;
+	private Date createdAt;                    //评论时间
+	private String cid;                        //评论id
+	private String ctext;                      //评论内容
+	private String source;                     //内容来源
+	private String mid;						   //评论62进制id
+	private String uid;							//评论者id
+	private String sid;							//评论微博id
+}
+
+//create table comment
+//(
+//	created_at bigint,				#评论时间
+//	cid VARCHAR(32) primary key,	#评论id
+//	ctext TEXT,						#评论内容
+//	source TEXT,					#评论源地址
+//	mid varchar(32),				#评论62进制id
+//	uid varchar(32),				#评论者id
+//	sid varchar(32)					#评论微博id
+//);

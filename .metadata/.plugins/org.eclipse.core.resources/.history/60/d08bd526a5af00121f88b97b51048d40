@@ -1,0 +1,57 @@
+package util;
+
+ 
+ import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+ 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.wltea.analyzer.lucene.IKAnalyzer;
+ 
+ 
+ public class Spliter {
+     
+        
+     /**
+      * 打印出给定分词器的分词结果
+      * @param analyzer 分词器
+      * @param text 文本
+      * @throws Exception
+      */
+	 
+	 private static Analyzer analyzer;
+	 
+	 static
+	 {
+		 analyzer = new IKAnalyzer();
+	 }
+	 
+     private static List<String> split(String text) throws Exception {
+         System.out.println("当前使用的分词器：" + analyzer.getClass().getSimpleName());
+         TokenStream tokenStream = analyzer.tokenStream("content", new StringReader(text));
+         tokenStream.addAttribute(CharTermAttribute.class);
+         LinkedList<String> list = new LinkedList<String>();
+         while (tokenStream.incrementToken()) {
+             CharTermAttribute charTermAttribute = tokenStream.getAttribute(CharTermAttribute.class);
+             //System.out.println(new String(charTermAttribute.toString()));
+             list.add(charTermAttribute.toString());
+         }
+         return list;
+     }
+     public static void main(String args[])
+     {
+    	try {
+			String[] list = split("IKAnalyzer是一个开源的，基于java语言开发的轻量级的中文分词工具包。从2006年12月推出1.0版开始， IKAnalyzer已经推出了3个大版本。");
+			for(int i=0; i<list.length; i++)
+			{
+				System.out.println(list[i]);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+     }
+ }

@@ -1,0 +1,14 @@
+package model;
+
+public class StatusScore {
+
+	private String sid;					//状态id
+	private float score;				//状态分数
+	
+}
+
+//create table status_score
+//(
+//	sid varchar(32) primary key,
+//	score float
+//);

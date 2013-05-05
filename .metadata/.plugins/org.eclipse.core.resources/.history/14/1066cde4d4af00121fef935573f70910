@@ -1,0 +1,80 @@
+package test;
+
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import model.Comment;
+import model.CommentScore;
+import model.Status;
+import model.StatusScore;
+import DAO.CommentDAO;
+import DAO.CommentScoreDAO;
+import DAO.StatusDAO;
+import DAO.StatusScoreDAO;
+import util.RateScore;
+
+
+public class Rating {
+
+	
+	public void rating()
+	{
+		StatusDAO statusDao = null;
+		CommentDAO commentDao = null;
+		RateScore rateScore = null;
+		List<Status> slist = null;
+		List<Comment> clist = null;
+		List<CommentScore> cslist = null;
+		List<StatusScore> sslist = null;
+		Status status = null;
+		StatusScore statusScore = null;
+		Iterator<Status> siter = null;
+		
+		statusDao = new StatusDAO();
+		commentDao = new CommentDAO();
+		rateScore = new RateScore();
+		sslist = new LinkedList<StatusScore>();
+		slist = statusDao.getStatus();		
+		siter = slist.iterator();
+		while(siter.hasNext())
+		{
+			status = siter.next();
+			clist = commentDao.getCommentByStatusId(status.getSid());
+			cslist = rateScore.rateComment(clist);
+			statusScore = new StatusScore();
+			statusScore.setScore(rateScore.rateStatus(cslist));
+			statusScore.setSid(status.getSid());
+			sslist.add(statusScore);
+			saveCommentScore(cslist);
+		}
+		saveStatusScore(sslist);
+	}
+	
+	public void saveStatusScore(List<StatusScore> sslist)
+	{
+		StatusScoreDAO statusScoreDao = null;
+		
+		statusScoreDao = new StatusScoreDAO();
+		statusScoreDao.save(sslist);
+	}
+	
+	public void saveCommentScore(List<CommentScore> cslist)
+	{
+		CommentScoreDAO commentScoreDao = null;
+		
+		commentScoreDao = new CommentScoreDAO();
+		commentScoreDao.save(cslist);
+	}
+	
+	public static void main(String args[])
+	{
+
+		Rating rating = new Rating();
+		rating.rating();
+		
+	}
+	
+	
+}

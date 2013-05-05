@@ -1,0 +1,139 @@
+package util;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import model.Comment;
+import model.CommentScore;
+import model.Status;
+
+public class RateScore {
+	
+	private static Map<String, Integer> dict = new HashMap<String, Integer>();
+
+	public List<CommentScore> rateComment(List<Comment> clist)
+	{
+		Spliter spliter = null;
+		List<String> words = null;
+		List<CommentScore> cslist = null;
+		CommentScore cs = null;
+		Comment c = null;
+		float score = 0.0f;
+		Iterator<Comment> iter = null;
+		
+		spliter = new Spliter();
+		cslist = new LinkedList<CommentScore>();
+		iter = clist.iterator();
+		while(iter.hasNext())
+		{
+			c = iter.next();
+			words = spliter.split(c.getCtext());
+			score = rate(words);
+			if(score!=0.0)
+			{
+				System.out.println(score);
+			}
+			
+			cs = new CommentScore(c.getCid(), score);
+			cslist.add(cs);
+		}
+		return cslist;
+	}
+	
+	public float rateStatus(List<CommentScore> clist)
+	{
+		float score = 0.0f;
+		Iterator<CommentScore> iter = null;
+		
+		iter = clist.iterator();
+		while(iter.hasNext())
+		{
+			score += iter.next().getScore();
+		}
+		return score;
+	}
+	
+	
+	private float rate(List<String> words)
+	{
+		Iterator<String> iter = null;
+		float score = 0.0f;
+		String w = null;
+		int polarity = 0;
+		
+		iter = words.iterator();
+		while(iter.hasNext())
+		{
+			w = iter.next();
+			if(dict.containsKey(w))
+			{
+				polarity = dict.get(w);
+			}
+			if(polarity == 1)
+			{
+				score++;
+			}
+			else if(polarity == 2)
+			{
+				score--;
+			}
+		}
+		return score;
+	}
+	
+	public static void loadDict()
+	{
+		File file = null;
+		BufferedReader br = null;
+		String str = null;
+		String word = null;
+		int polarity = 0;
+		int middleIndex = 0;
+		
+		try {
+			file = new File("D:\\dict1.txt");
+			br = new BufferedReader(new FileReader(file));
+			while((str = br.readLine()) != null)
+			{
+				middleIndex = str.indexOf('\t');
+				word = str.substring(0, middleIndex);
+				polarity = Integer.parseInt(str.substring(middleIndex + 1, str.length()));
+				dict.put(word, polarity);
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				br.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	public static void main(String args[])
+	{
+//		RateScore rs = new RateScore();
+//		RateScore.loadDict();
+//		System.out.println(RateScore.dict);
+//		System.out.println(RateScore.dict.size());
+	}
+	
+}

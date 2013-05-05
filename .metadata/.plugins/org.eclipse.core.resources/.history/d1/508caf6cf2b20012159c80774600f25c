@@ -1,0 +1,31 @@
+package DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class UserDAO {
+
+	public void test()
+	{
+		Connection conn = null;
+		PreparedStatement pStmt = null;
+		String sql = "insert into user";
+	}
+	
+}
+
+//create table user
+//(
+//	uid varchar(32) primary key, 	#用户id
+//	screen_name varchar(32),		#昵称
+//	provience varchar(32),			#省份
+//	city varchar(32),				#城市
+//	url TEXT,						#用户博客地址
+//	gender varchar(2),				#性别
+//	follower_count int,				#粉丝数
+//	friends_count int,				#关注数
+//	status_count int,				#微博数
+//	favourites_count int,			#收藏数
+//	created_at DATETIME,			#账户创建时间
+//	bi_followers_count int			#互粉数
+//);

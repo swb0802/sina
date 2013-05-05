@@ -1,0 +1,13 @@
+package model;
+
+public class CommentScore {
+
+	private String cid; 			//评论id
+	private float score;			//评论得分
+	
+}
+//create table comment_score
+//(
+//	cid varchar(32) primary key,
+//	score float  
+//);
